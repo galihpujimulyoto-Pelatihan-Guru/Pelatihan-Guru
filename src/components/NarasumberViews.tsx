@@ -243,11 +243,37 @@ export const NarasumberPenilaian: React.FC = () => {
       toast(`+${amt} XP untuk ${g} ✔`);
     };
 
+    const resetSemua = async () => {
+      if (confirm(`Yakin ingin mereset XP dan Nilai untuk kelompok ${g}?`)) {
+        await updateState(draft => {
+          draft.groups[g].xp = 0;
+          draft.groups[g].scores = {};
+          if (!draft.groups[g].xpHistory) draft.groups[g].xpHistory = [];
+          draft.groups[g].xpHistory!.unshift({ reason: "Reset Manual", amount: 0, timestamp: Date.now() });
+        });
+        setScores({});
+        toast(`Nilai & XP ${g} direset ✔`);
+      }
+    };
+
+    const setManualXP = async (val: number) => {
+      const newXp = Math.max(0, val);
+      if (newXp === d.xp) return;
+      await updateState(draft => {
+        draft.groups[g].xp = newXp;
+        if (!draft.groups[g].xpHistory) draft.groups[g].xpHistory = [];
+        draft.groups[g].xpHistory!.unshift({ reason: "Edit XP Manual", amount: newXp - d.xp, timestamp: Date.now() });
+      });
+    };
+
     return (
       <div className="border border-[var(--color-line)] rounded-xl p-4 mb-3 bg-white/50">
         <div className="flex justify-between items-center gap-2 flex-wrap mb-3">
           <span className="font-semibold text-[var(--color-ink)] text-lg">{g}</span>
-          <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-700 uppercase tracking-wide">{LEVELS[levelOf(d.xp)].name} · {d.xp} XP</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-amber-50 text-amber-700 uppercase tracking-wide">{LEVELS[levelOf(d.xp)].name} · {d.xp} XP</span>
+            <button onClick={resetSemua} className="px-2 py-1 bg-white text-red-600 border border-red-200 rounded-md font-semibold text-[10px] hover:bg-red-50 transition-colors shadow-sm uppercase tracking-wider">Reset</button>
+          </div>
         </div>
         
         <div className="space-y-3">
@@ -276,13 +302,19 @@ export const NarasumberPenilaian: React.FC = () => {
         </div>
         
         <div className="mt-4 pt-3 border-t border-[var(--color-line)]">
-          <span className="text-xs font-semibold text-[var(--color-muted)] block mb-2 uppercase tracking-wider">Beri XP Manual Tambahan</span>
-          <div className="flex flex-wrap gap-2">
+          <span className="text-xs font-semibold text-[var(--color-muted)] block mb-2 uppercase tracking-wider">Beri XP Manual Tambahan / Edit Total</span>
+          <div className="flex flex-wrap gap-2 items-center mb-3">
             {Object.entries(XP).map(([reason, amt]) => (
               <button key={reason} onClick={() => awardManualXP(amt, reason)} className="px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-md font-bold text-xs hover:bg-emerald-200 transition-colors shadow-sm">
                 {reason} (+{amt})
               </button>
             ))}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-[var(--color-muted)]">Set Total XP:</span>
+            <button onClick={() => setManualXP(d.xp - 10)} className="w-8 h-8 rounded-md border border-[var(--color-line)] bg-white text-lg font-bold text-red-600 hover:bg-red-50 transition-colors flex items-center justify-center">−</button>
+            <input type="number" min="0" value={d.xp} onChange={e => setManualXP(parseInt(e.target.value)||0)} className="w-16 text-center py-1 border border-[var(--color-line)] rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-sm" />
+            <button onClick={() => setManualXP(d.xp + 10)} className="w-8 h-8 rounded-md border border-[var(--color-line)] bg-white text-lg font-bold text-indigo-600 hover:bg-indigo-50 transition-colors flex items-center justify-center">+</button>
           </div>
         </div>
       </div>

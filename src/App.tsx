@@ -70,7 +70,10 @@ const Root: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-transparent relative">
+      <div 
+        className="min-h-screen flex items-center justify-center relative"
+        style={{ backgroundImage: "url('/bg-login.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}
+      >
         <BackgroundElements />
         <div className="text-[var(--color-plum-main)] font-bold animate-pulse text-[18px] relative z-10">Memuat...</div>
       </div>
@@ -78,12 +81,15 @@ const Root: React.FC = () => {
   }
 
   return (
-    <>
+    <div 
+      className="min-h-screen relative"
+      style={{ backgroundImage: "url('/bg-login.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}
+    >
       <BackgroundElements />
       <div className="relative z-10">
         {user ? <MainApp /> : <LoginScreen />}
       </div>
-    </>
+    </div>
   );
 };
 
