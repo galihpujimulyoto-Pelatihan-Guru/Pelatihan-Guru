@@ -20,6 +20,7 @@ export interface ParticipantState {
   name: string;
   group: string;
   scores: Record<string, number>;
+  avatar?: string;
 }
 
 export interface AppState {

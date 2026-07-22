@@ -215,7 +215,7 @@ export const PesertaPapan: React.FC = () => {
       const oldLvlIdx = prevLevelRef.current[r.name] !== undefined ? prevLevelRef.current[r.name] : currentLvlIdx;
       
       if (currentLvlIdx > oldLvlIdx) {
-        setLevelUpData({ group: r.name, level: LEVELS[currentLvlIdx].label, id: Date.now() });
+        setLevelUpData({ group: r.name, level: LEVELS[currentLvlIdx].name, id: Date.now() });
       }
       prevLevelRef.current[r.name] = currentLvlIdx;
     });

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import { useAppContext } from '../AppContext';
 import { NS_USER, NS_PASS } from '../constants';
 
@@ -40,20 +41,24 @@ export const LoginScreen: React.FC = () => {
         return;
       }
       
-      const p = state.participants[code];
-      if (!p) {
-        setError('Kode akses tidak valid atau belum terdaftar.');
+      if (code !== 'STEAM2026') {
+        setError('Kode akses salah.');
         setLoading(false);
         return;
       }
       
-      if (p.name !== name) {
-        setError('Nama tidak cocok dengan kode akses ini. Pastikan nama lengkap sudah benar.');
+      const pId = Object.keys(state.participants).find(
+        k => state.participants[k].name === name
+      );
+      
+      if (!pId) {
+        setError('Akun tidak ditemukan. Pastikan nama lengkap sudah benar atau buat akun baru.');
         setLoading(false);
         return;
       }
       
-      setUser({ role: 'peserta', name: p.name, group: p.group, code: code });
+      const p = state.participants[pId];
+      setUser({ role: 'peserta', name: p.name, group: p.group, code: pId });
     }
     setLoading(false);
   };
@@ -84,7 +89,7 @@ export const LoginScreen: React.FC = () => {
     );
 
     if (existingPcode) {
-      setError('Nama ini sudah terdaftar. Silakan gunakan tab "Masuk" dengan kode akses Anda.');
+      setError('Nama ini sudah terdaftar. Silakan gunakan tab "Masuk" dengan kode akses STEAM2026.');
       setLoading(false);
       return;
     }
@@ -94,8 +99,7 @@ export const LoginScreen: React.FC = () => {
       draft.participants[pcode] = { name, group, scores: {} };
     });
 
-    setGeneratedCode(pcode);
-    setParticipantCode(pcode);
+    setUser({ role: 'peserta', name, group, code: pcode });
     setLoading(false);
   };
 
@@ -105,10 +109,51 @@ export const LoginScreen: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[var(--color-paper)]">
-      <div className="bg-[var(--color-card)] w-full max-w-md rounded-2xl p-8 border border-[var(--color-line)] shadow-sm relative z-10 overflow-hidden">
+    <div 
+      className="min-h-screen flex items-center justify-center p-6 bg-transparent relative overflow-hidden"
+    >
+      {/* Animated Elements */}
+      <motion.div 
+        animate={{ 
+          y: [0, -30, 0],
+          rotate: [0, 5, -5, 0]
+        }}
+        transition={{ 
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        className="absolute top-[10%] left-[10%] w-32 h-32 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
+      />
+      <motion.div 
+        animate={{ 
+          y: [0, 40, 0],
+          x: [0, 20, 0],
+          rotate: [0, -10, 10, 0]
+        }}
+        transition={{ 
+          duration: 12, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        className="absolute bottom-[20%] right-[10%] w-48 h-48 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl transform rotate-12"
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.6, 0.3]
+        }}
+        transition={{ 
+          duration: 10, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        className="absolute top-[40%] right-[30%] w-24 h-24 bg-white/20 blur-2xl rounded-full"
+      />
+
+      <div className="bg-white/80 backdrop-blur-xl w-full max-w-md rounded-2xl p-8 border border-white/40 shadow-2xl relative z-10 overflow-hidden">
         
-        <div className="w-12 h-12 rounded-lg bg-[var(--color-plum-main)] flex items-center justify-center text-white text-2xl mb-6 shadow-sm">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-plum-main)] to-purple-600 flex items-center justify-center text-white text-2xl mb-6 shadow-md shadow-purple-500/30">
           🎮
         </div>
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Pelatihan Guru MI</div>
@@ -131,74 +176,53 @@ export const LoginScreen: React.FC = () => {
         </div>
 
         {role === 'peserta' ? (
-          generatedCode ? (
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mb-4 text-center">
-              <h3 className="text-emerald-800 font-bold mb-2">Pendaftaran Berhasil!</h3>
-              <p className="text-emerald-700 text-sm mb-4">Harap simpan kode akses ini untuk login di kemudian hari:</p>
-              <div className="text-3xl font-mono font-bold text-emerald-900 bg-emerald-100 py-3 rounded-md mb-6 tracking-widest">
-                {generatedCode}
-              </div>
-              <button 
-                onClick={continueAfterRegister}
-                className="w-full py-2.5 bg-emerald-600 text-white rounded-md font-medium text-sm shadow-sm hover:bg-emerald-700 transition-colors"
-              >
-                Mulai Bermain
-              </button>
-            </div>
-          ) : (
             <div>
-              <div className="flex gap-2 mb-6 border-b border-[var(--color-line)]">
-                <button 
-                  onClick={() => { setPesertaMode('login'); setError(''); }}
-                  className={`pb-2 text-sm font-medium border-b-2 transition-colors ${pesertaMode === 'login' ? 'border-[var(--color-plum-main)] text-[var(--color-plum-main)]' : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]'}`}
-                >
-                  Sudah Punya Kode
-                </button>
-                <button 
-                  onClick={() => { setPesertaMode('register'); setError(''); }}
-                  className={`pb-2 text-sm font-medium border-b-2 transition-colors ${pesertaMode === 'register' ? 'border-[var(--color-plum-main)] text-[var(--color-plum-main)]' : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]'}`}
-                >
-                  Daftar Baru
-                </button>
-              </div>
+              <h2 className="text-lg font-bold mb-6 text-[var(--color-ink)] text-center tracking-wide">
+                {pesertaMode === 'login' ? 'MASUKKAN AKUN' : 'BUAT AKUN BARU'}
+              </h2>
 
               {pesertaMode === 'login' ? (
                 <>
                   <div className="mb-4">
-                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">Nama Lengkap</label>
+                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">NAMA LENGKAP</label>
                     <input 
                       value={participantName} onChange={e => setParticipantName(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase"
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold"
                       placeholder="NAMA LENGKAP" autoComplete="off" />
                   </div>
                   <div className="mb-6">
-                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">Kode Akses</label>
+                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">KODE AKSES</label>
                     <input 
                       value={participantCode} onChange={e => setParticipantCode(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase"
-                      placeholder="Misal: ABCD12" autoComplete="off" />
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold tracking-widest"
+                      placeholder="Silahkan masukan kode akses pelatihan." autoComplete="off" />
                   </div>
                   <button 
                     onClick={handleLogin} disabled={loading}
-                    className="w-full py-2.5 bg-[var(--color-plum-main)] text-white rounded-md font-medium text-sm shadow-sm hover:bg-[var(--color-plum-2)] transition-colors disabled:opacity-60"
+                    className="w-full py-3 bg-[var(--color-plum-main)] text-white rounded-md font-bold text-sm shadow-sm hover:bg-[var(--color-plum-2)] transition-colors disabled:opacity-60 uppercase tracking-widest"
                   >
                     {loading ? 'Memuat...' : 'Masuk'}
                   </button>
+
+                  <div className="mt-6 text-center text-sm text-[var(--color-muted)] pt-4 border-t border-[var(--color-line)]">
+                    <span className="italic">Apabila Anda belum memiliki AKUN, Silahkan</span> <br/>
+                    <button onClick={() => { setPesertaMode('register'); setError(''); }} className="mt-2 text-[var(--color-plum-main)] font-bold hover:underline uppercase tracking-wide">BUAT AKUN BARU</button>
+                  </div>
                 </>
               ) : (
                 <>
                   <div className="mb-4">
-                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">Nama Lengkap</label>
+                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">NAMA LENGKAP</label>
                     <input 
                       value={participantName} onChange={e => setParticipantName(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase"
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold"
                       placeholder="NAMA LENGKAP SESUAI ABSENSI" autoComplete="off" />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">Kelompok</label>
+                    <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">KELOMPOK</label>
                     <select 
                       value={participantGroup} onChange={e => setParticipantGroup(e.target.value)}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm appearance-none"
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm appearance-none font-medium"
                     >
                       <option value="" disabled>Pilih kelompok Anda</option>
                       {state.config.groups.map(g => (
@@ -214,20 +238,24 @@ export const LoginScreen: React.FC = () => {
                       onChange={e => setNameConfirmed(e.target.checked)}
                       className="mt-1 shrink-0"
                     />
-                    <label htmlFor="confirm-name" className="text-xs text-[var(--color-muted)] leading-relaxed">
+                    <label htmlFor="confirm-name" className="text-xs text-[var(--color-muted)] leading-relaxed font-medium">
                       Saya memastikan bahwa nama lengkap di atas sudah benar. (Nama yang salah tidak akan bisa diubah nantinya)
                     </label>
                   </div>
                   <button 
                     onClick={handleRegister} disabled={loading}
-                    className="w-full py-2.5 bg-[var(--color-plum-main)] text-white rounded-md font-medium text-sm shadow-sm hover:bg-[var(--color-plum-2)] transition-colors disabled:opacity-60"
+                    className="w-full py-3 bg-[var(--color-plum-main)] text-white rounded-md font-bold text-sm shadow-sm hover:bg-[var(--color-plum-2)] transition-colors disabled:opacity-60 uppercase tracking-widest"
                   >
-                    {loading ? 'Membuat Akun...' : 'Daftar & Dapatkan Kode'}
+                    {loading ? 'Membuat Akun...' : 'Daftar & Masuk'}
                   </button>
+
+                  <div className="mt-6 text-center text-sm text-[var(--color-muted)] pt-4 border-t border-[var(--color-line)]">
+                    Sudah memiliki AKUN? Silahkan <br/>
+                    <button onClick={() => { setPesertaMode('login'); setError(''); }} className="mt-2 text-[var(--color-plum-main)] font-bold hover:underline uppercase tracking-wide">MASUK DISINI</button>
+                  </div>
                 </>
               )}
             </div>
-          )
         ) : (
           <div>
             <div className="mb-4">
