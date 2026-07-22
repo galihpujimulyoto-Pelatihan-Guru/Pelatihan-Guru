@@ -1,0 +1,6 @@
+{
+  "name": "Guru Level Up",
+  "description": "A gamified training platform for teachers to explore Gen Alpha education, STEAM, and Gamification. Includes both Participant and Trainer modes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
