@@ -29,7 +29,7 @@ export const ModulView: React.FC = () => {
         </div>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">🎯 Tujuan Pelatihan</h2>
         <p className="text-[var(--color-muted)] text-sm mb-4">Setelah mengikuti pelatihan, peserta mampu:</p>
         <ul className="list-none space-y-2">
@@ -39,12 +39,12 @@ export const ModulView: React.FC = () => {
         </ul>
       </motion.div>
       
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">⏱️ Rundown Pelatihan</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200">
+              <tr className="bg-white/50 border-b border-slate-200">
                 <th className="py-2 px-4 font-bold text-slate-700">Waktu</th>
                 <th className="py-2 px-4 font-bold text-slate-700">Kegiatan</th>
               </tr>
@@ -64,7 +64,7 @@ export const ModulView: React.FC = () => {
         </div>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Ice Breaking</div>
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-2 flex items-center gap-2">🧩 "Guru Level Up"</h2>
         <p className="mb-4 text-sm text-[var(--color-ink)]">Setiap peserta mendapat kartu karakter. Setiap aktivitas memperoleh XP (Experience Point). Di akhir pelatihan akan naik level.</p>
@@ -86,7 +86,7 @@ export const ModulView: React.FC = () => {
         </div>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Sesi 1</div>
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">👶 Mengenal Generasi Alpha</h2>
         
@@ -100,13 +100,13 @@ export const ModulView: React.FC = () => {
             <li key={t} className="pl-6 relative before:content-['✔'] before:absolute before:left-0 before:text-indigo-600 before:font-bold">{t}</li>
           ))}
         </ul>
-        <p className="text-sm text-[var(--color-ink)] mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">Maka guru harus berubah. Dari... <span className="font-bold line-through text-slate-400">Teacher Center</span> menjadi <span className="font-bold text-indigo-600">Learning Designer</span>.</p>
+        <p className="text-sm text-[var(--color-ink)] mb-4 bg-white/50 p-3 rounded-lg border border-slate-100">Maka guru harus berubah. Dari... <span className="font-bold line-through text-slate-400">Teacher Center</span> menjadi <span className="font-bold text-indigo-600">Learning Designer</span>.</p>
         
         <h3 className="font-bold text-sm text-[var(--color-ink)] mb-2 text-indigo-700">Aktivitas Seru: "Guru Jadul vs Guru Gen Alpha"</h3>
         <p className="text-sm text-[var(--color-ink)]">Setiap kelompok membuat drama singkat. Kelompok A: Mengajar tahun 1995. Kelompok B: Mengajar tahun 2026. Peserta lain menilai. Pasti ramai dan lucu.</p>
       </motion.div>
       
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Sesi 2</div>
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">🎮 Gamifikasi</h2>
         
@@ -123,11 +123,11 @@ export const ModulView: React.FC = () => {
         <p className="text-sm text-[var(--color-ink)]">Setiap kelompok harus membuka "Kotak Misteri." Di dalam kotak terdapat: Puzzle, QR Code, Petunjuk, Potongan gambar, Kode angka. Kelompok harus menyelesaikan misi. Tanpa sadar mereka sedang belajar gamifikasi.</p>
       </motion.div>
       
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Sesi 3</div>
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">🔬 STEAM</h2>
         
-        <p className="text-sm text-[var(--color-ink)] mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">STEAM bukan lima mata pelajaran. Tetapi cara berpikir. Science, Technology, Engineering, Arts, Mathematics. Semuanya digunakan untuk menyelesaikan masalah nyata.</p>
+        <p className="text-sm text-[var(--color-ink)] mb-4 bg-white/50 p-3 rounded-lg border border-slate-100">STEAM bukan lima mata pelajaran. Tetapi cara berpikir. Science, Technology, Engineering, Arts, Mathematics. Semuanya digunakan untuk menyelesaikan masalah nyata.</p>
         
         <h3 className="font-bold text-sm text-[var(--color-ink)] mb-2 text-indigo-700">Aktivitas Besar: "Mission Impossible"</h3>
         <p className="text-sm text-[var(--color-ink)] mb-2">Tema: <strong>"Banjir di Sekolah"</strong></p>
@@ -144,7 +144,7 @@ export const ModulView: React.FC = () => {
         </ul>
       </motion.div>
       
-      <motion.div variants={itemVariants} className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+      <motion.div variants={itemVariants} className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
         <div className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Sesi 4</div>
         <h2 className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">🎓 Praktik Menjadi Guru</h2>
         
@@ -152,7 +152,7 @@ export const ModulView: React.FC = () => {
         <p className="text-sm text-[var(--color-ink)] mb-2">Setiap kelompok mendapat tema. Contoh: Shalat, Hewan, Air, Energi, Pahlawan, Lingkungan, Bilangan, Bangun Datar, Zakat, Tumbuhan.</p>
         <p className="text-sm text-[var(--color-ink)] mb-4">Mereka harus membuat pembelajaran (durasi 30 menit) yang memiliki: Story, Mission, Level, STEAM, Reward, Penilaian.</p>
         
-        <div className="bg-slate-50 border border-[var(--color-line)] p-4 rounded-xl mb-6">
+        <div className="bg-white/50 border border-[var(--color-line)] p-4 rounded-xl mb-6">
           <h4 className="font-bold text-sm text-[var(--color-ink)] mb-2">Contoh Game: "Menyelamatkan Planet Hijau"</h4>
           <ul className="text-sm text-[var(--color-ink)] space-y-1">
             <li><strong>Cerita:</strong> Planet kehilangan pohon. Setiap kelompok menjadi tim penyelamat.</li>

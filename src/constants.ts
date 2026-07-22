@@ -39,11 +39,10 @@ export const TASKS = [
 export const TEMPLATE_FIELDS = TASKS.flatMap(t => t.fields);
 
 export const RUBRIC = [
-  "Kreativitas",
-  "Kolaborasi",
-  "Gamifikasi",
-  "Integrasi STEAM",
-  "Praktik Mengajar"
+  "Sesi 1",
+  "Sesi 2",
+  "Sesi 3",
+  "Sesi 4"
 ];
 
 export const MATERIALS = [
@@ -66,7 +65,7 @@ export function nextLevel(xp: number): { min: number, name: string } | null {
 
 export function studTotal(scores?: Record<string, number>): number {
   if (!scores) return 0;
-  return RUBRIC.reduce((s, k) => s + ((Number(scores[k]) || 0) * 0.2), 0);
+  return RUBRIC.reduce((s, k) => s + ((Number(scores[k]) || 0) ), 0);
 }
 
 export function genCode(): string {

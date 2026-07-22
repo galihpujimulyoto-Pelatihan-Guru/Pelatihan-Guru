@@ -10,8 +10,7 @@ export const PTabs = [
 export const NTabs = [
   ['peserta_kelola', 'Data Peserta'],
   ['overview', 'Ringkasan'],
-  ['skor', 'Beri XP'],
-  ['nilai', 'Nilai Kelompok'],
+  ['penilaian', 'Penilaian'],
   ['template', 'Karya Peserta'],
   ['reaksi_ns', 'Reaksi'],
   ['modul', 'Modul']

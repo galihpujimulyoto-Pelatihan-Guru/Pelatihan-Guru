@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useAppContext } from '../AppContext';
 import { PTabs, NTabs } from './Tabs';
 import { PesertaBeranda, PesertaReaksi, PesertaGame, PesertaPapan, PesertaLencana } from './PesertaViews';
-import { NarasumberKelola, NarasumberOverview, NarasumberSkor, NarasumberNilai, NarasumberTemplate, NarasumberReaksi } from './NarasumberViews';
+import { NarasumberKelola, NarasumberOverview, NarasumberPenilaian, NarasumberTemplate, NarasumberReaksi } from './NarasumberViews';
 import { ModulView } from './SharedViews';
 import { SparkleToastContainer } from './UI';
 
@@ -61,8 +61,7 @@ export const MainApp: React.FC = () => {
     switch(activeTab) {
       case 'peserta_kelola': return <NarasumberKelola />;
       case 'overview': return <NarasumberOverview />;
-      case 'skor': return <NarasumberSkor />;
-      case 'nilai': return <NarasumberNilai />;
+      case 'penilaian': return <NarasumberPenilaian />;
       case 'template': return <NarasumberTemplate />;
       case 'reaksi_ns': return <NarasumberReaksi />;
       case 'modul': return <ModulView />;

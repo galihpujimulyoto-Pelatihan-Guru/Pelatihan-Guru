@@ -66,7 +66,7 @@ export const PesertaReaksi: React.FC = () => {
   };
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
       <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Umpan balik peserta</motion.div>
       <motion.h2 variants={itemVariants} className="text-xl font-bold text-[var(--color-ink)] mb-2 flex items-center gap-2">💬 Reaksi materi</motion.h2>
       <motion.p variants={itemVariants} className="text-[var(--color-muted)] text-sm mb-6">Beri tahu narasumber pendapatmu tiap sesi. Bisa diubah kapan saja.</motion.p>
@@ -77,10 +77,10 @@ export const PesertaReaksi: React.FC = () => {
           <motion.div variants={itemVariants} key={m.id} className="border-t border-dashed border-[var(--color-line)] mt-4 pt-4">
             <div className="text-xs text-[var(--color-muted)] font-bold mb-2 uppercase tracking-wide">{m.label}</div>
             <div className="flex flex-wrap gap-2">
-              <button onClick={() => toggleReaksi(m.id, 'senti', 'like')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.senti === 'like' ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 'bg-white text-[var(--color-muted)] border-[var(--color-line)] hover:bg-slate-50'}`}>👍 Suka</button>
-              <button onClick={() => toggleReaksi(m.id, 'senti', 'dislike')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.senti === 'dislike' ? 'border-red-500 text-red-700 bg-red-50' : 'bg-white text-[var(--color-muted)] border-[var(--color-line)] hover:bg-slate-50'}`}>👎 Tidak suka</button>
-              <button onClick={() => toggleReaksi(m.id, 'paham', 'paham')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.paham === 'paham' ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'bg-white text-[var(--color-muted)] border-[var(--color-line)] hover:bg-slate-50'}`}>💡 Paham</button>
-              <button onClick={() => toggleReaksi(m.id, 'paham', 'bingung')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.paham === 'bingung' ? 'border-amber-500 text-amber-700 bg-amber-50' : 'bg-white text-[var(--color-muted)] border-[var(--color-line)] hover:bg-slate-50'}`}>❓ Belum paham</button>
+              <button onClick={() => toggleReaksi(m.id, 'senti', 'like')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.senti === 'like' ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 'bg-white/60 text-[var(--color-muted)] border-[var(--color-line)] hover:bg-white/50'}`}>👍 Suka</button>
+              <button onClick={() => toggleReaksi(m.id, 'senti', 'dislike')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.senti === 'dislike' ? 'border-red-500 text-red-700 bg-red-50' : 'bg-white/60 text-[var(--color-muted)] border-[var(--color-line)] hover:bg-white/50'}`}>👎 Tidak suka</button>
+              <button onClick={() => toggleReaksi(m.id, 'paham', 'paham')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.paham === 'paham' ? 'border-indigo-500 text-indigo-700 bg-indigo-50' : 'bg-white/60 text-[var(--color-muted)] border-[var(--color-line)] hover:bg-white/50'}`}>💡 Paham</button>
+              <button onClick={() => toggleReaksi(m.id, 'paham', 'bingung')} className={`flex items-center gap-1.5 px-4 py-2 border rounded-full font-semibold text-xs transition-colors ${r.paham === 'bingung' ? 'border-amber-500 text-amber-700 bg-amber-50' : 'bg-white/60 text-[var(--color-muted)] border-[var(--color-line)] hover:bg-white/50'}`}>❓ Belum paham</button>
             </div>
           </motion.div>
         );
@@ -108,14 +108,14 @@ export const PesertaGame: React.FC = () => {
   };
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
       <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Tugas & Karya Kelompok</motion.div>
       <motion.h2 variants={itemVariants} className="text-xl font-bold text-[var(--color-ink)] mb-2 flex items-center gap-2">✍️ Lembar Kerja Kelompok {user!.group}</motion.h2>
       <motion.p variants={itemVariants} className="text-[var(--color-muted)] text-sm mb-6">Kerjakan bersama kelompokmu. Semua jawaban akan langsung diterima oleh narasumber.</motion.p>
       
       <div className="space-y-8">
         {TASKS.map((task) => (
-          <motion.div variants={itemVariants} key={task.id} className="border border-[var(--color-line)] rounded-xl p-5 bg-slate-50">
+          <motion.div variants={itemVariants} key={task.id} className="border border-[var(--color-line)] rounded-xl p-5 bg-white/50">
             <h3 className="font-bold text-lg text-indigo-700 mb-1">{task.title}</h3>
             <p className="text-sm text-[var(--color-muted)] mb-4">{task.desc}</p>
             {task.fields.map(f => (
@@ -124,7 +124,7 @@ export const PesertaGame: React.FC = () => {
                 <textarea 
                   value={tmpl[f] || ""}
                   onChange={e => setTmpl({...tmpl, [f]: e.target.value})}
-                  className="w-full p-3 border border-[var(--color-line)] rounded-lg bg-white resize-y focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-colors text-sm shadow-sm"
+                  className="w-full p-3 border border-[var(--color-line)] rounded-lg bg-white/60 resize-y focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-colors text-sm shadow-sm"
                   style={{ minHeight: (f === 'Cerita' || f === 'Misi' || f === 'Ide Solusi' || f === 'Strategi & Pelajaran' || f === 'Hasil Diskusi') ? '100px' : '60px' }}
                 />
               </div>
@@ -142,7 +142,7 @@ export const PesertaGame: React.FC = () => {
       <motion.textarea 
         variants={itemVariants}
         value={refl} onChange={e => setRefl(e.target.value)} placeholder="Tulis refleksimu…"
-        className="w-full p-3 min-h-[100px] border border-[var(--color-line)] rounded-xl bg-slate-50 resize-y focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-colors mb-4 text-sm"
+        className="w-full p-3 min-h-[100px] border border-[var(--color-line)] rounded-xl bg-white/50 resize-y focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-colors mb-4 text-sm"
       />
       <motion.button variants={itemVariants} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={saveRefl} className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg font-bold text-sm hover:bg-indigo-700 shadow-sm transition-colors">Tempel di papan</motion.button>
     </motion.div>
@@ -233,7 +233,7 @@ export const PesertaPapan: React.FC = () => {
   }, [levelUpData]);
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm relative overflow-hidden">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm relative overflow-hidden">
       
       <AnimatePresence>
         {levelUpData && (
@@ -293,7 +293,7 @@ export const PesertaPapan: React.FC = () => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
                 key={r.name} 
-                className={`p-4 rounded-xl border relative ${isMe ? 'border-indigo-200 bg-indigo-50/30' : 'border-[var(--color-line)] bg-slate-50/50'}`}
+                className={`p-4 rounded-xl border relative ${isMe ? 'border-indigo-200 bg-indigo-50/30' : 'border-[var(--color-line)] bg-white/30'}`}
               >
               {bursts[r.name] && <ParticleBurst key={bursts[r.name]} />}
               <div className="flex items-center gap-4 mb-3">
@@ -364,7 +364,7 @@ export const PesertaPapan: React.FC = () => {
         })}
         </AnimatePresence>
       </div>
-      <motion.button variants={itemVariants} onClick={refreshState} className="mt-6 px-4 py-2 border border-[var(--color-line)] rounded-md bg-white text-sm font-semibold text-[var(--color-muted)] hover:border-indigo-500 hover:text-indigo-600 transition-colors shadow-sm">🔄 Segarkan Papan Skor</motion.button>
+      <motion.button variants={itemVariants} onClick={refreshState} className="mt-6 px-4 py-2 border border-[var(--color-line)] rounded-md bg-white/60 text-sm font-semibold text-[var(--color-muted)] hover:border-indigo-500 hover:text-indigo-600 transition-colors shadow-sm">🔄 Segarkan Papan Skor</motion.button>
     </motion.div>
   );
 };
@@ -386,19 +386,35 @@ export const PesertaLencana: React.FC = () => {
   const chartData = RUBRIC.map(k => ({ subject: k, A: me.scores?.[k] || 0, fullMark: 100 }));
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
+    <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
       <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Graduation</motion.div>
       <motion.h2 variants={itemVariants} className="text-xl font-bold text-[var(--color-ink)] mb-1 flex items-center gap-2">🏅 Lencana kelompok</motion.h2>
       <motion.p variants={itemVariants} className="text-[var(--color-muted)] text-sm mb-4">{user!.group}</motion.p>
       
       <motion.div variants={containerVariants} className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3 mt-4">
-        {BADGES.map(b => (
-          <motion.div variants={itemVariants} key={b.id} className={`bg-white border border-[var(--color-line)] rounded-xl p-4 text-center transition-all duration-300 ${earned[b.id as keyof typeof earned] ? 'opacity-100 border-[var(--color-gold-main)] bg-[var(--color-gold-soft)] shadow-sm' : 'opacity-40'}`}>
-            <span className="text-3xl block">{b.ic}</span>
-            <span className="font-bold text-sm mt-2 block">{b.n}</span>
-            <span className="text-[10px] text-[var(--color-muted)] block mt-0.5">{b.s}</span>
-          </motion.div>
-        ))}
+        {BADGES.map(b => {
+          const isEarned = earned[b.id as keyof typeof earned];
+          return (
+            <motion.div 
+              variants={itemVariants} 
+              key={b.id} 
+              animate={isEarned ? { scale: [0.8, 1.15, 1] } : { scale: 1 }}
+              transition={{ duration: 0.5, type: "spring", bounce: 0.5 }}
+              whileHover={isEarned ? { scale: 1.05 } : {}}
+              className={`bg-white/60 border rounded-xl p-4 text-center transition-colors duration-300 ${isEarned ? 'opacity-100 border-[var(--color-gold-main)] bg-[var(--color-gold-soft)] shadow-sm' : 'opacity-40 border-[var(--color-line)]'}`}
+            >
+              <motion.span 
+                className="text-3xl block origin-center"
+                animate={isEarned ? { rotate: [0, -15, 15, -10, 10, 0], scale: [1, 1.3, 1] } : {}}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {b.ic}
+              </motion.span>
+              <span className="font-bold text-sm mt-2 block">{b.n}</span>
+              <span className="text-[10px] text-[var(--color-muted)] block mt-0.5">{b.s}</span>
+            </motion.div>
+          );
+        })}
       </motion.div>
       
       <motion.h3 variants={itemVariants} className="font-bold text-lg text-[var(--color-ink)] mt-8 mb-3">📋 Nilai Kelompok — {user!.group}</motion.h3>
@@ -418,12 +434,12 @@ export const PesertaLencana: React.FC = () => {
             <table className="w-full border-collapse text-sm text-[var(--color-ink)]">
               <tbody>
                 {RUBRIC.map((k, i) => (
-                  <tr key={k} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                  <tr key={k} className={i % 2 === 0 ? 'bg-white/50' : 'bg-white/60'}>
                     <td className="px-4 py-2 border-b border-[var(--color-line)]">{k}</td>
                     <td className="px-4 py-2 border-b border-[var(--color-line)] text-right font-bold">{me.scores[k] ?? '–'}</td>
                   </tr>
                 ))}
-                <tr className="bg-slate-50">
+                <tr className="bg-white/50">
                   <td className="px-4 py-3 font-bold">Total</td>
                   <td className="px-4 py-3 text-right font-bold text-indigo-600 text-base">{tot}</td>
                 </tr>
