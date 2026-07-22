@@ -70,7 +70,7 @@ const Root: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-paper)] relative">
+      <div className="min-h-screen flex items-center justify-center bg-transparent relative">
         <BackgroundElements />
         <div className="text-[var(--color-plum-main)] font-bold animate-pulse text-[18px] relative z-10">Memuat...</div>
       </div>

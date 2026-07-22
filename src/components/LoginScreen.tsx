@@ -115,40 +115,48 @@ export const LoginScreen: React.FC = () => {
       {/* Animated Elements */}
       <motion.div 
         animate={{ 
-          y: [0, -30, 0],
-          rotate: [0, 5, -5, 0]
+          y: [0, -20, 0],
+          rotate: [0, 180, 360]
         }}
         transition={{ 
-          duration: 8, 
+          duration: 15, 
           repeat: Infinity, 
-          ease: "easeInOut" 
+          ease: "linear" 
         }}
-        className="absolute top-[10%] left-[10%] w-32 h-32 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
-      />
+        className="absolute top-[15%] left-[15%] text-white/20"
+      >
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+        </svg>
+      </motion.div>
       <motion.div 
         animate={{ 
-          y: [0, 40, 0],
-          x: [0, 20, 0],
-          rotate: [0, -10, 10, 0]
+          y: [0, 30, 0],
+          x: [0, -30, 0],
+          rotate: [0, -90, 0]
         }}
         transition={{ 
           duration: 12, 
           repeat: Infinity, 
           ease: "easeInOut" 
         }}
-        className="absolute bottom-[20%] right-[10%] w-48 h-48 bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 shadow-xl transform rotate-12"
-      />
+        className="absolute bottom-[25%] right-[15%] text-white/20"
+      >
+        <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="12 2 2 22 22 22" />
+        </svg>
+      </motion.div>
       <motion.div 
         animate={{ 
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.6, 0.3]
+          scale: [1, 1.5, 1],
+          opacity: [0.1, 0.4, 0.1]
         }}
         transition={{ 
-          duration: 10, 
+          duration: 8, 
           repeat: Infinity, 
           ease: "easeInOut" 
         }}
-        className="absolute top-[40%] right-[30%] w-24 h-24 bg-white/20 blur-2xl rounded-full"
+        className="absolute top-[40%] right-[25%] w-32 h-32 border border-white/20 rounded-full"
       />
 
       <div className="bg-white/80 backdrop-blur-xl w-full max-w-md rounded-2xl p-8 border border-white/40 shadow-2xl relative z-10 overflow-hidden">
@@ -177,9 +185,11 @@ export const LoginScreen: React.FC = () => {
 
         {role === 'peserta' ? (
             <div>
-              <h2 className="text-lg font-bold mb-6 text-[var(--color-ink)] text-center tracking-wide">
-                {pesertaMode === 'login' ? 'MASUKKAN AKUN' : 'BUAT AKUN BARU'}
-              </h2>
+              {pesertaMode === 'register' && (
+                <h2 className="text-lg font-bold mb-6 text-[var(--color-ink)] text-center tracking-wide">
+                  BUAT AKUN BARU
+                </h2>
+              )}
 
               {pesertaMode === 'login' ? (
                 <>
@@ -187,15 +197,15 @@ export const LoginScreen: React.FC = () => {
                     <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">NAMA LENGKAP</label>
                     <input 
                       value={participantName} onChange={e => setParticipantName(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold"
-                      placeholder="NAMA LENGKAP" autoComplete="off" />
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold italic placeholder:italic placeholder:normal-case placeholder:font-normal"
+                      placeholder="Nama Lengkap" autoComplete="off" />
                   </div>
                   <div className="mb-6">
                     <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">KODE AKSES</label>
                     <input 
                       value={participantCode} onChange={e => setParticipantCode(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold tracking-widest"
-                      placeholder="Silahkan masukan kode akses pelatihan." autoComplete="off" />
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold tracking-widest placeholder:normal-case placeholder:tracking-normal placeholder:font-normal"
+                      placeholder="Masukan Kode Akses Pelatihan" autoComplete="off" />
                   </div>
                   <button 
                     onClick={handleLogin} disabled={loading}
@@ -205,7 +215,7 @@ export const LoginScreen: React.FC = () => {
                   </button>
 
                   <div className="mt-6 text-center text-sm text-[var(--color-muted)] pt-4 border-t border-[var(--color-line)]">
-                    <span className="italic">Apabila Anda belum memiliki AKUN, Silahkan</span> <br/>
+                    <span className="italic">Apabila Anda belum memiliki AKUN,</span> <br/>
                     <button onClick={() => { setPesertaMode('register'); setError(''); }} className="mt-2 text-[var(--color-plum-main)] font-bold hover:underline uppercase tracking-wide">BUAT AKUN BARU</button>
                   </div>
                 </>
@@ -215,8 +225,8 @@ export const LoginScreen: React.FC = () => {
                     <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">NAMA LENGKAP</label>
                     <input 
                       value={participantName} onChange={e => setParticipantName(e.target.value.toUpperCase())}
-                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold"
-                      placeholder="NAMA LENGKAP SESUAI ABSENSI" autoComplete="off" />
+                      className="w-full px-4 py-2 border border-[var(--color-line)] rounded-md bg-[var(--color-paper)] focus:outline-none focus:ring-2 focus:ring-[var(--color-plum-main)] focus:bg-white transition-all text-sm uppercase font-semibold italic placeholder:italic placeholder:normal-case placeholder:font-normal"
+                      placeholder="Nama Lengkap" autoComplete="off" />
                   </div>
                   <div className="mb-4">
                     <label className="block text-xs font-semibold text-[var(--color-muted)] mb-1 uppercase tracking-wider">KELOMPOK</label>

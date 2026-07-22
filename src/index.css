@@ -32,6 +32,10 @@
 
 body {
   background-color: var(--color-paper);
+  background-image: url('/bg-login.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--color-ink);
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   overflow-x: hidden;
