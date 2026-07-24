@@ -24,6 +24,7 @@ export const NarasumberKelola: React.FC = () => {
   const [paGroup, setPaGroup] = useState(state.config.groups[0] || '');
   const [importText, setImportText] = useState('');
   const [newGrpName, setNewGrpName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const codes = Object.keys(state.participants);
 
@@ -61,9 +62,50 @@ export const NarasumberKelola: React.FC = () => {
     });
   };
 
+  const downloadCSV = () => {
+    let csv = "Nama,Kode,Kelompok,Skor Sesi 1,Skor Sesi 2,Skor Sesi 3,Skor Sesi 4,Total Skor\n";
+    codes.forEach(c => {
+      const p = state.participants[c];
+      const s1 = p.scores?.["Sesi 1"] || 0;
+      const s2 = p.scores?.["Sesi 2"] || 0;
+      const s3 = p.scores?.["Sesi 3"] || 0;
+      const s4 = p.scores?.["Sesi 4"] || 0;
+      const total = (s1 + s2 + s3 + s4); // or studTotal if imported, let's just sum
+      csv += `"${p.name}",${c},"${p.group}",${s1},${s2},${s3},${s4},${total}\n`;
+    });
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'daftar_peserta.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportState = () => {
+    const dataStr = JSON.stringify(state, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `backup_state_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
-      <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Kelola akses</motion.div>
+      <div className="flex justify-between items-start mb-1">
+        <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Kelola akses</motion.div>
+        <div className="flex gap-2">
+          <motion.button variants={itemVariants} onClick={exportState} className="px-3 py-1.5 bg-blue-600 text-white rounded-md font-semibold text-xs hover:bg-blue-700 shadow-sm transition-colors flex items-center gap-1">
+            💾 Export State
+          </motion.button>
+          <motion.button variants={itemVariants} onClick={downloadCSV} className="px-3 py-1.5 bg-emerald-600 text-white rounded-md font-semibold text-xs hover:bg-emerald-700 shadow-sm transition-colors flex items-center gap-1">
+            ⬇️ Unduh CSV
+          </motion.button>
+        </div>
+      </div>
       <motion.h2 variants={itemVariants} className="text-xl font-bold text-[var(--color-ink)] mb-4 flex items-center gap-2">👥 Data peserta</motion.h2>
       
       <motion.h3 variants={itemVariants} className="font-bold text-sm text-[var(--color-ink)] mb-3 mt-6">Tambah satu peserta</motion.h3>
@@ -79,13 +121,27 @@ export const NarasumberKelola: React.FC = () => {
       
       <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Daftar peserta ({codes.length})</motion.div>
       <motion.h3 variants={itemVariants} className="font-bold text-sm text-[var(--color-ink)] mb-3">Kode akses</motion.h3>
+      
+      <motion.div variants={itemVariants} className="mb-4">
+        <input 
+          value={searchQuery} 
+          onChange={e => setSearchQuery(e.target.value)} 
+          placeholder="Cari peserta (nama atau kelompok)..." 
+          className="w-full px-4 py-2 border border-[var(--color-line)] rounded-lg text-sm bg-white/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors" 
+        />
+      </motion.div>
+
       {codes.length > 0 ? state.config.groups.map(g => {
         const mem = Object.entries(state.participants).filter(([_, p]: [string, any]) => p.group === g);
-        if (!mem.length) return null;
+        const filteredMem = mem.filter(([_, p]: [string, any]) => {
+          const q = searchQuery.toLowerCase();
+          return p.name.toLowerCase().includes(q) || p.group.toLowerCase().includes(q);
+        });
+        if (!filteredMem.length) return null;
         return (
           <motion.div variants={itemVariants} key={g} className="my-4">
             <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-indigo-50 text-indigo-700 mb-2 uppercase tracking-wide">{g}</span>
-            {mem.map(([c, p]: [string, any]) => (
+            {filteredMem.map(([c, p]: [string, any]) => (
               <div key={c} className="flex items-center gap-3 py-2 border-b border-[var(--color-line)] flex-wrap last:border-b-0 hover:bg-white/50 transition-colors">
                 <span className="flex-1 min-w-[120px] font-semibold text-sm text-[var(--color-ink)]">{p.name}</span>
                 <span onClick={() => { navigator.clipboard.writeText(c); toast("Kode disalin"); }} className="font-mono bg-amber-50 text-amber-700 font-bold px-3 py-1 rounded-md tracking-wider cursor-copy hover:bg-amber-100 transition-colors text-xs">{c}</span>
@@ -339,7 +395,18 @@ export const NarasumberPenilaian: React.FC = () => {
 };
 
 export const NarasumberTemplate: React.FC = () => {
-  const { state } = useAppContext();
+  const { state, updateState } = useAppContext();
+
+  const clearTask = async (g: string) => {
+    if (confirm(`Yakin ingin menghapus semua tugas dan refleksi kelompok ${g}?`)) {
+      await updateState(draft => {
+        draft.groups[g].template = {};
+        draft.groups[g].reflection = "";
+      });
+      toast(`Tugas kelompok ${g} telah dihapus ✔`);
+    }
+  };
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show" className="bg-white/90 backdrop-blur-md border border-[var(--color-line)] rounded-2xl p-6 shadow-sm">
       <motion.div variants={itemVariants} className="text-[10px] tracking-widest uppercase text-[var(--color-muted)] font-bold mb-1">Hasil & Karya Peserta</motion.div>
@@ -352,10 +419,15 @@ export const NarasumberTemplate: React.FC = () => {
           const refl = state.groups[g].reflection;
           
           return (
-            <motion.div variants={itemVariants} key={g} className="border border-[var(--color-line)] rounded-xl p-5 mb-4 bg-white/50">
+            <motion.div variants={itemVariants} key={g} className="border border-[var(--color-line)] rounded-xl p-5 mb-4 bg-white/50 relative">
               <div className="flex justify-between items-center mb-3 flex-wrap gap-2">
                 <span className="font-bold text-lg text-[var(--color-ink)]">{g}</span>
-                {has ? <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-emerald-50 text-emerald-700 uppercase tracking-wider">Terkirim</span> : <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-slate-200 text-slate-500 uppercase tracking-wider">Kosong</span>}
+                <div className="flex items-center gap-2">
+                  {has ? <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-emerald-50 text-emerald-700 uppercase tracking-wider">Terkirim</span> : <span className="inline-block px-3 py-1 rounded-md text-xs font-bold bg-slate-200 text-slate-500 uppercase tracking-wider">Kosong</span>}
+                  {(has || refl) && (
+                    <button onClick={() => clearTask(g)} className="px-2 py-1 bg-white text-red-600 border border-red-200 rounded-md font-semibold text-[10px] hover:bg-red-50 transition-colors shadow-sm uppercase tracking-wider">Hapus</button>
+                  )}
+                </div>
               </div>
               
               {has ? (

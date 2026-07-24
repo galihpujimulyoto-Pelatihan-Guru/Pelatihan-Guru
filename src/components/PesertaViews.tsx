@@ -114,23 +114,36 @@ export const PesertaGame: React.FC = () => {
       <motion.p variants={itemVariants} className="text-[var(--color-muted)] text-sm mb-6">Kerjakan bersama kelompokmu. Semua jawaban akan langsung diterima oleh narasumber.</motion.p>
       
       <div className="space-y-8">
-        {TASKS.map((task) => (
-          <motion.div variants={itemVariants} key={task.id} className="border border-[var(--color-line)] rounded-xl p-5 bg-white/50">
-            <h3 className="font-bold text-lg text-indigo-700 mb-1">{task.title}</h3>
-            <p className="text-sm text-[var(--color-muted)] mb-4">{task.desc}</p>
-            {task.fields.map(f => (
-              <div key={f} className="mb-4 last:mb-0">
-                <label className="block font-bold text-sm mb-1.5 text-[var(--color-ink)]">{f}</label>
-                <textarea 
-                  value={tmpl[f] || ""}
-                  onChange={e => setTmpl({...tmpl, [f]: e.target.value})}
-                  className="w-full p-3 border border-[var(--color-line)] rounded-lg bg-white/60 resize-y focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-colors text-sm shadow-sm"
-                  style={{ minHeight: (f === 'Cerita' || f === 'Misi' || f === 'Ide Solusi' || f === 'Strategi & Pelajaran' || f === 'Hasil Diskusi') ? '100px' : '60px' }}
-                />
-              </div>
-            ))}
-          </motion.div>
-        ))}
+        {TASKS.map((task) => {
+          const isSesi4 = task.title.includes('Sesi 4');
+          const hasScoreSesi4 = g.scores?.['Sesi 4'] !== undefined;
+          const isDisabled = isSesi4 && hasScoreSesi4;
+
+          return (
+            <motion.div variants={itemVariants} key={task.id} className="border border-[var(--color-line)] rounded-xl p-5 bg-white/50 relative">
+              {isDisabled && (
+                <div className="absolute top-4 right-4 bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
+                  Telah Dinilai
+                </div>
+              )}
+              <h3 className="font-bold text-lg text-indigo-700 mb-1">{task.title}</h3>
+              <p className="text-sm text-[var(--color-muted)] mb-4">{task.desc}</p>
+              {task.fields.map(f => (
+                <div key={f} className="mb-4 last:mb-0">
+                  <label className="block font-bold text-sm mb-1.5 text-[var(--color-ink)]">{f}</label>
+                  <textarea 
+                    value={tmpl[f] || ""}
+                    onChange={e => !isDisabled && setTmpl({...tmpl, [f]: e.target.value})}
+                    readOnly={isDisabled}
+                    disabled={isDisabled}
+                    className={`w-full p-3 border border-[var(--color-line)] rounded-lg resize-y focus:outline-none focus:ring-4 transition-colors text-sm shadow-sm ${isDisabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white/60 focus:border-indigo-500 focus:ring-indigo-50'}`}
+                    style={{ minHeight: (f === 'Cerita' || f === 'Misi' || f === 'Ide Solusi' || f === 'Strategi & Pelajaran' || f === 'Hasil Diskusi') ? '100px' : '60px' }}
+                  />
+                </div>
+              ))}
+            </motion.div>
+          );
+        })}
       </div>
 
       <motion.div variants={itemVariants} className="mt-6 flex justify-end">
